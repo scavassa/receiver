@@ -1,0 +1,35 @@
+name: Reusable Workflow Receiver
+
+on:
+  workflow_call:
+    inputs:
+      image_path:
+        required: true
+        type: string
+      image_tag: 
+        required: true
+        type: string
+      dockerfile_path:
+        required: true
+        type: string
+      environment:
+        type: string
+        required: true
+
+
+jobs:
+  deploy_image:
+    runs-on: ubuntu-latest
+    permissions:
+        write-all
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: 'Samble Build'
+        run: |
+          echo docker build -t ${{inputs.image_path}}:${{inputs.image_tag}} ${{inputs.dockerfile_path}}
+      - name: "List files from checkout"
+        run: |
+          ls -l .github/workflows
